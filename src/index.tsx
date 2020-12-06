@@ -13,9 +13,18 @@ axios.interceptors.response.use(
     return response;
   },
   function(error) {
-    if (error.response.status === 400) {
-    } else if (error.response.status === 403 || error.response.status === 401 ) {
-        alert(error.response.data?.message);
+    const response = error.response;
+    if (response && response.data) {
+        const data = response.data;
+        switch (response.status) {
+            case 400:
+                alert(data.data);
+                break;
+            case 401:
+            case 403:
+                alert(data.message);
+                break;
+        }
     }
     return Promise.reject(error.response);
   }
